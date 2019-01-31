@@ -1,0 +1,36 @@
+operations = {
+    'addr': lambda a, b: regs[a] + regs[b],
+    'addi': lambda a, b: regs[a] + b,
+    'mulr': lambda a, b: regs[a] * regs[b],
+    'muli': lambda a, b: regs[a] * b,
+    'banr': lambda a, b: regs[a] & regs[b],
+    'bani': lambda a, b: regs[a] & b,
+    'borr': lambda a, b: regs[a] | regs[b],
+    'bori': lambda a, b: regs[a] | b,
+    'setr': lambda a, b: regs[a],
+    'seti': lambda a, b: a,
+    'gtir': lambda a, b: int(a > regs[b]),
+    'gtri': lambda a, b: int(regs[a] > b),
+    'gtrr': lambda a, b: int(regs[a] > regs[b]),
+    'eqir': lambda a, b: int(a == regs[b]),
+    'eqri': lambda a, b: int(regs[a] == b),
+    'eqrr': lambda a, b: int(regs[a] == regs[b])
+}
+
+with open('./input/day21.txt', 'r') as f:
+    lines = f.read().strip().split('\n')
+    init_ip = int(lines[0].split()[1])
+    lines = lines[1:]
+    instructions = [v.split() for v in lines]
+
+    regs = {k: 0 for k in range(6)}
+    ip = regs[init_ip]
+
+    while ip < len(instructions):
+        regs[init_ip] = ip
+        instruction, A, B, C = instructions[ip]
+        print(instructions[ip])
+        regs[int(C)] = operations[instruction](int(A), int(B))
+        ip = regs[init_ip]
+        ip += 1
+        
